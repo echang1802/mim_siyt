@@ -23,7 +23,6 @@ class Item:
         self.title = title
         self.reviews = reviews
 
-
 class Review:
     """
     Models an Item's review
@@ -35,7 +34,6 @@ class Review:
         self.rate = rate
         self.likes = likes
         self.dislikes = dislikes
-
 
 def get_resource(resource, subresource='', params=None):
     """
@@ -61,8 +59,6 @@ def get_resource(resource, subresource='', params=None):
         return {}
 
     return data.json()
-
-
 
 def get_resource_paginated(resource, subresource='', params=None, page_limit=50):
     """
@@ -94,7 +90,6 @@ def get_resource_paginated(resource, subresource='', params=None, page_limit=50)
             data = get_resource(resource, subresource, params)
             yield data
 
-
 def store_items_with_reviews(items, category, page_num, output_directory):
     """
     Persist Items with Reviews
@@ -104,7 +99,24 @@ def store_items_with_reviews(items, category, page_num, output_directory):
     :param output_directory: directory where to store the data
     """
     # TODO aquí debemos construir una vista columnar de las reviews
-
+    vista = {
+        "category" : [],
+        "item_title" : [],
+        "review_title" : [],
+        "review_content" : [],
+        "rerview_rate" : [],
+        "review_likes" : [],
+        "review_dislikes" : []
+    }
+    for i in items:
+        for r in i.reviews:
+            vista["category"].append(i.category)
+            vista["item_title"].append(i.title)
+            vista["review_title"].append(r.title)
+            vista["review_content"].append(r.content)
+            vista["review_rate"].append(r.rate)
+            vista["review_likes"].append(r.likes)
+            vista["review_dislikes"].append(r.dislikes)
 
     # TODO luego debemos guardarla en 'output_directory' en formato parquet
     # TODO el nombre de archivo debe reflejar categoría y número de página
