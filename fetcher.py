@@ -104,7 +104,7 @@ def store_items_with_reviews(items, category, page_num, output_directory):
         "item_title" : [],
         "review_title" : [],
         "review_content" : [],
-        "rerview_rate" : [],
+        "review_rate" : [],
         "review_likes" : [],
         "review_dislikes" : []
     }
