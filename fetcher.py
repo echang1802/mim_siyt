@@ -125,7 +125,7 @@ def store_items_with_reviews(items, category, page_num, output_directory):
     filename = output_directory + "/" + category + str(page_num) + ".parquet"
     pyarrow.parquet.write_table(vista,  filename)
 
-def get_item_reviews(item_id):
+def get_item_reviews(item_id, max_reviews_per_item):
     """
     Get all the Item's Reviews
 
@@ -143,14 +143,17 @@ def get_item_reviews(item_id):
                 return reviews
             for review in page["reviews"]:
                 reviews.append(Review(review["id"], review["title"], review["content"], review["rate"], review["likes"], review["dislikes"]))
+                if len(reviews) == max_reviews_per_item:
+                    return reviews
     return reviews
+
 
 
 def get_page_items(page, reviews_goal, max_reviews_per_item):
     items = []
     reviews_count = 0
     for item in page['results']:
-        reviews = get_item_reviews(item['id'])[:max_reviews_per_item]
+        reviews = get_item_reviews(item['id'], max_reviews_per_item)
         if len(reviews) == 0:
             # We only care about items with reviews
             continue
