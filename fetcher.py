@@ -118,10 +118,12 @@ def store_items_with_reviews(items, category, page_num, output_directory):
             vista["review_likes"].append(r.likes)
             vista["review_dislikes"].append(r.dislikes)
 
+    vista = pyarrow.Table.from_pydict(vista)
+
     # TODO luego debemos guardarla en 'output_directory' en formato parquet
     # TODO el nombre de archivo debe reflejar categoría y número de página
-    filename = output_directory + "/" + category + str(page_num)
-    pyarrow.parquet.write_table(items,  filename)
+    filename = output_directory + "/" + category + str(page_num) + ".parquet"
+    pyarrow.parquet.write_table(vista,  filename)
 
 def get_item_reviews(item_id):
     """
