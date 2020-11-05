@@ -134,7 +134,16 @@ def get_item_reviews(item_id):
     """
 
     # TODO aquí deberíamos retornar un objeto Review por cada review del ítem
-    return []
+    reviews = []
+    ready = False
+    while not ready:
+        pages =  get_resource_paginated(MELI_REVIEWS_RESOURCE, subresource=item_id, params=None, page_limit=50)
+        for i, page in enumerate(pages):
+            if not "reviews" in page.keys():
+                return reviews
+            for review in page["reviews"]:
+                reviews.append(Review(review["id"], review["title"], review["content"], review["rate"], review["likes"], review["dislikes"]))
+    return reviews
 
 
 def get_page_items(page, reviews_goal, max_reviews_per_item):
