@@ -48,11 +48,9 @@ def get_resource(resource, subresource='', params=None):
     # TODO construir una URL con 'MELI_BASE_URL', 'resource', 'subresource' y 'params'
     subresource = ("/" if subresource != "" else "") + subresource
     url = MELI_BASE_URL + "/" + resource + subresource + "?"
-    for key in params.keys():
-        url += key + "=" + str(params[key])
 
     # TODO y luego ir a buscar los contenidos de dicha URL
-    data = requests.get(url)
+    data = requests.get(url, params = params)
 
     # TODO importante tener en cuenta el manejo de errores, en caso de que falle el request
     if data.status_code >= 400 and data.status_code <= 599:
@@ -100,8 +98,10 @@ def store_items_with_reviews(items, category, page_num, output_directory):
     """
     # TODO aquí debemos construir una vista columnar de las reviews
     vista = {
+        "item_key"  : [],
         "category" : [],
         "item_title" : [],
+        "review_key" : [],
         "review_title" : [],
         "review_content" : [],
         "review_rate" : [],
@@ -110,8 +110,10 @@ def store_items_with_reviews(items, category, page_num, output_directory):
     }
     for i in items:
         for r in i.reviews:
+            vista["item_key"].append(i.key)
             vista["category"].append(i.category)
             vista["item_title"].append(i.title)
+            vista["review_key"].append(r.key)
             vista["review_title"].append(r.title)
             vista["review_content"].append(r.content)
             vista["review_rate"].append(r.rate)
