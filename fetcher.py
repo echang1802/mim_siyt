@@ -35,7 +35,7 @@ class Review:
         self.likes = likes
         self.dislikes = dislikes
 
-def get_resource(resource, subresource='', params=None):
+def get_resource(resource, subresource='', params = None):
     """
     Util method to get an API resource
 
@@ -47,8 +47,7 @@ def get_resource(resource, subresource='', params=None):
     """
     # TODO construir una URL con 'MELI_BASE_URL', 'resource', 'subresource' y 'params'
     subresource = ("/" if subresource != "" else "") + subresource
-    url = MELI_BASE_URL + "/" + resource + subresource + "?"
-
+    url = MELI_BASE_URL + "/" + resource + subresource
     # TODO y luego ir a buscar los contenidos de dicha URL
     data = requests.get(url, params = params)
 
