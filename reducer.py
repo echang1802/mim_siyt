@@ -72,7 +72,7 @@ def calculate_tfs_idfs(tfs, term_buckets, term_categories):
             tf_idfs[bucket][category] = {}
             for term, tf in category_tfs.items():
                 # TODO aquí deben calcular el tfs/idfs del bucket, categoría y término y volcarlo en el diccionario tf_idfs
-                idf = math.log(n_catgories / term_categories[term].len())
+                idf = math.log(n_categories / term_categories[term].len())
                 tf_idfs[bucket][category][term] = tf * idf
 
     return tf_idfs
