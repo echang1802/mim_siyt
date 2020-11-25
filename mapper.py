@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import glob
 import os
 import sys
 from pyarrow import parquet
@@ -126,7 +127,11 @@ def map_function(content, category, bucket):
 
 def main():
     output = []
-    for inputfile in sys.argv[1:]:
+    inputfiles = sys.argv[1:]
+    if len(inputfiles) == 1:
+        inputfiles = glob.glob(inputfiles[0])
+
+    for inputfile in inputfiles:
         records = parquet.read_pandas(inputfile).to_pandas()
         for index, record in records.iterrows():
             review = Review.from_record(record, os.path.basename(inputfile))
@@ -135,6 +140,7 @@ def main():
     # The (key, value) pairs are output in sorted order by key
     for key, value in sorted(output):
         print(key + "\t" + str(value))
+
 
 
 if __name__ == '__main__':
