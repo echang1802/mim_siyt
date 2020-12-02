@@ -6,6 +6,7 @@ import sys
 from pyarrow import parquet
 from nltk import word_tokenize
 from nltk.corpus import stopwords
+spanishStopWords = stopwords.words('spanish')
 
 
 def category_from_filename(filename):
@@ -65,7 +66,7 @@ def accept(term):
     """
     # TODO implementar acá un filtro que devuelve True sólo para las palabras de interés,
     #      por ejemplo, eliminando STOPWORDS o filtrando sólo palabras alfanuméricas.
-    return (not term in stopwords.words('spanish')) & term.isalnum()
+    return (not term in spanishStopWords) & term.isalnum()
 
 
 def sanitize(word):
